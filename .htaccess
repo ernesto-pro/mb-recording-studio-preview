@@ -1,0 +1,45 @@
+AddDefaultCharset UTF-8
+DirectoryIndex index.html
+Options -Indexes
+ErrorDocument 404 /404.html
+
+# Host canonico: HTTPS + www
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(?:www\.)?mbrecordingstudio\.it$ [NC]
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^ https://www.mbrecordingstudio.it%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<IfModule mod_mime.c>
+AddType font/woff2 .woff2
+AddType image/webp .webp
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType application/xml "access plus 1 hour"
+ExpiresByType application/json "access plus 1 hour"
+ExpiresByType text/plain "access plus 1 hour"
+ExpiresByType video/mp4 "access plus 1 month"
+ExpiresByType image/webp "access plus 6 months"
+ExpiresByType image/png "access plus 6 months"
+ExpiresByType image/jpeg "access plus 6 months"
+ExpiresByType text/css "access plus 1 month"
+ExpiresByType application/javascript "access plus 1 month"
+ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header append Vary "Accept-Encoding"
+</IfModule>
